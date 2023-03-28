@@ -1,2 +1,2 @@
 # simpleemail
-Simple PHP HTML class
+Simple PHP HTML email class
