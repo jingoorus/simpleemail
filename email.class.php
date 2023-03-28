@@ -17,7 +17,7 @@ final class SimpleEmail
 
     private $html = true;
 
-    private $newline = '\r\n';
+    private $newline = "\r\n";
     
     public function __construct(array $options = [])
     {
@@ -68,16 +68,15 @@ final class SimpleEmail
     {
         if ( is_array( $this->to ) ) {
 
-            $cleared_to = array_map(function($v){
-    
-                if ( $v != '' ) {
-    
-                    return $v;
-                }
-    
-            }, $this->to);
+            foreach ($this->to as $n => $to) {
 
-			$to = implode(',', $cleared_to);
+                if ( $to === '' ) {
+
+                    unset($this->to[$n]);
+                }
+            }
+
+			$to = implode(',', $this->to);
 
 		} else {
 
@@ -90,6 +89,12 @@ final class SimpleEmail
 
             $headers = implode($this->newline, $this->headers);
         }
+
+        $headers .= 'From: ' . '=?UTF-8?B?' . base64_encode($this->sender) . '?=' . '<' . $this->from . '>' . $this->newline;
+
+		$headers .= 'Reply-To: ' . '=?UTF-8?B?' . base64_encode($this->sender) . '?=' . '<' . $this->from . '>' . $this->newline;
+
+		$headers .= 'Return-Path: ' . $this->from . $this->newline;
         
         $headers .= 'Content-type: text/' . ($this->html === true ? 'html' : 'plain') . '; charset=utf-8' . $this->newline;
         
