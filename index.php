@@ -14,5 +14,7 @@ $mail = new SimpleEmail([
 
 $mail->set(['to' => 'string']);//add another to
 
+$mail->set(['subject' => 'string']);//replace subject
+
 $mail->send();
 ?>
