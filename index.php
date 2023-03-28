@@ -12,5 +12,7 @@ $mail = new SimpleEmail([
 	'body' => 'string')
 ]);
 
+$mail->set(['to' => 'string']);//add another to
+
 $mail->send();
 ?>
